@@ -14,12 +14,23 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Show list of users Admin
+     * @param model
+     * @return
+     */
     @GetMapping("/admin/get-user")
     public String getAllUsers(Model model) {
         List<User> users=userService.getAllUsers();
         model.addAttribute("user",users);
         return "fetchUser";
     }
+
+    /**
+     * Show list of users User
+     * @param model
+     * @return
+     */
     @GetMapping("/user/get-user")
     public String getAllUsers1(Model model) {
         List<User> users=userService.getAllUsers();
@@ -27,6 +38,11 @@ public class UserController {
         return "fetchUser_user";
     }
 
+    /**
+     * Add new user
+     * @param model
+     * @return
+     */
     @GetMapping("/user/adduser")
     public String addUser1(Model model) {
         User users=new User();
@@ -34,12 +50,22 @@ public class UserController {
         return "createUser";
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     @PostMapping(path = "/user/adduser")
     public String addUser(@ModelAttribute("user") User user) {
         userService.save(user);
         return "redirect:/app/users/user/get-user";
     }
 
+    /**
+     * Delete a user
+     * @param id
+     * @return
+     */
     @RequestMapping(path ="/admin/deleteUser/{id}")
     public String delete(@PathVariable Long id) {
         userService.deleteById(id);

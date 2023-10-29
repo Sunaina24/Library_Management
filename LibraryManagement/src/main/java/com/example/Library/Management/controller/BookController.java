@@ -23,18 +23,39 @@ public class BookController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Admin Homepage
+     * @param model
+     * @return
+     */
     @GetMapping("/admin/home")
     public String home(Model model){return "homepage";}
 
+    /**
+     * User Homepage
+     * @param model
+     * @return
+     */
     @GetMapping("/user/home")
     public String homeUser(Model model){return "homepageUser";}
 
+    /**
+     * Show list of books Admin
+     * @param model
+     * @return
+     */
     @GetMapping("/admin/list-books")
     public String getAllBooks(Model model) {
         List<Book> books=bookService.findAll();
         model.addAttribute("book",books);
         return "fetchBook";
     }
+
+    /**
+     * Show list of books User
+     * @param model
+     * @return
+     */
     @GetMapping("/user/list-books")
     public String getAllBooksUser(Model model) {
         List<Book> books=bookService.findAll();
@@ -48,6 +69,11 @@ public class BookController {
 //        return "newBook";
 //    }
 
+    /**
+     * Add new book
+     * @param model
+     * @return
+     */
     @GetMapping("/admin/add")
     public String addBookUrl(Model model) {
         List<User> users=userService.getAllUsers();
@@ -64,6 +90,12 @@ public class BookController {
 //        return "redirect:/admin/list-books";
 //    }
 
+    /**
+     *
+     * @param book
+     * @param selectedUserId
+     * @return
+     */
     @PostMapping("/admin/addBook")
     public String addBook(@ModelAttribute("book") Book book, @RequestParam("selectedUserId") Long selectedUserId) {
         User user = userService.findById(selectedUserId); // Retrieve the User based on the selected user's ID
@@ -80,6 +112,12 @@ public class BookController {
 //            return "updateBook";
 //    }
 
+    /**
+     * Update the book
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/admin/update/{id}")
     public String updatePage(@PathVariable("id") Long id, Model model) {
         Book book = bookRepository.findById(id).get();
@@ -96,7 +134,14 @@ public class BookController {
 //        bookService.update(book);
 //        return "redirect:/admin/list-books";
 //    }
-@PostMapping("/admin/update")
+
+    /**
+     *
+     * @param book
+     * @param selectedUserId
+     * @return
+     */
+    @PostMapping("/admin/update")
 public String updateBook(@ModelAttribute("book") Book book, @RequestParam("selectedUserId") Long selectedUserId) {
     User user = userService.findById(selectedUserId); // Retrieve the User based on the selected user's ID
     book.setUser(user); // Set the User in the Book entity
@@ -104,6 +149,11 @@ public String updateBook(@ModelAttribute("book") Book book, @RequestParam("selec
     return "redirect:/admin/list-books";
 }
 
+    /**
+     * Delete the book
+     * @param id
+     * @return
+     */
     @RequestMapping("/admin/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
         bookService.deleteById(id);
